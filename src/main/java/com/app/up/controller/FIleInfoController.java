@@ -45,11 +45,15 @@ public class FIleInfoController {
 	public ResponseEntity<Resource> download(@PathVariable("fileName")String fileName) throws MalformedURLException {
 		Resource resource = infoService.downloadFile(fileName);
 		String filename2 = resource.getFilename();
-		System.out.println(filename2);
 		return ResponseEntity.ok()
 							 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" +filename2)
 							 .contentType(MediaType.parseMediaType("application/octet-stream"))
 							 .body(resource);
+	}
+	
+	@PostMapping("/files")
+	public List<FileInfo> saveMultipartFiles(List<MultipartFile> files) throws IOException {
+		return infoService.saveMultipleFiles(files);
 	}
 	
 	@GetMapping(value = "/num1/{num1}/num2/{num2}", produces = MediaType.APPLICATION_JSON_VALUE)
